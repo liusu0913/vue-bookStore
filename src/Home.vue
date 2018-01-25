@@ -2,27 +2,42 @@
 <template>
 	<div class="container">
 		<div class="mask" v-if="maskIsShow"></div>
-		<h1>{{tit}}</h1>
-		<div class="banner">
-			<img src="./assets/images/banner.jpg" width="100%" alt="">
+		<Dialog></Dialog>		
+		<div class="banner-news">
+			<banner></banner>
+			<news></news>
 		</div>
-		<ul class="book-list clearfix">
+
+		<!-- <ul class="book-list clearfix">
 			<router-link v-for="(book,index) in bookList" :to="{name:'BookContent', params: {id: index+1}}" tag="li" :key="index">
 				<img src="./assets/images/book.jpg" alt="">
 				<p>{{book.name}}</p>
 			</router-link>
-		</ul>
+		</ul> -->
+		<div class="book">
+			<!-- 监听事件onshow的触发；会调用show函数 -->
+			<booklist :head="newBook" :type="newType" @onshow="show($event)"></booklist>
+			<booklist :head="editBook" :type="editType" @onshow="show($event)"></booklist>
+		</div>
+		
 	</div>
 </template>
 <script>
 	import Vue from 'vue'
+	import Banner from './components/home/Banner.vue'
+	import News from './components/home/News.vue'
+	import Booklist from './components/home/Booklist.vue'
+	import Dialog from './components/home/dialog.vue'
 	export default {
 		name: 'Home',
 		data() {
 			return {
-				tit: 'Home',
 				maskIsShow: true,
-				bookList: []
+				bookList: [],
+				newBook: '新书上架',
+				newType: 0,
+				editBook: '推荐书籍',
+				editType: 1
 			}
 		},
 		mounted() {
@@ -30,20 +45,27 @@
 				this.maskIsShow = false;
 				this.bookList = res.data;
 			})
-		}
+		},
+		methods: {
+			show(book) {
+				console.log(this.$route);
+			}
+		},
+		components: { Banner,News,Booklist,Dialog }
 
 	}
 </script>
 <style scope>
-	.banner {
-		margin-bottom: 20px;
-	}
 	img {
 		display: block;
 		width: 100%;
 	}
 	.container {
 		width: 100%;
+	}
+	.banner-news {
+		padding-bottom: 5px;
+		background-color: #ccc;
 	}
 	.mask {
 		position: fixed;
@@ -53,20 +75,5 @@
 		width: 100%;
 		height: 100%;
 		background-color: black;
-	}
-	.book-list {
-		list-style: none;
-	}
-	.book-list li {
-		float: left;
-		width: 50%;
-		text-align: center;
-	}
-	.book-list li img {
-		display: inline-block;
-		width: 80%;
-	}
-	.book-list li p {
-		color: red;
 	}
 </style>

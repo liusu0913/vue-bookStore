@@ -36,13 +36,13 @@ export default {
 </script>
 
 <style>
+html {
+  font-size: 100px;
+}
 html, body {
-  overflow: hidden;
   width: 100%;
   height: 100%;
-}
-body {
-  overflow: auto;
+  overflow-x: hidden;
 }
 * {
   margin: 0;
@@ -58,16 +58,23 @@ body {
 .clearfix {
   zoom: 1;
 }
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  overflow: auto;
 }
 .show {
   width: 100%;
-  padding-bottom: 60px;
+  padding-bottom: .8rem;
 }
 .topbar {
   position: fixed;
@@ -83,9 +90,9 @@ body {
   display: inline-block;
   width: 25%;
   border: 2px solid red;
-  font-size: 20px;
+  font-size: .20rem;
   font-weight: 700;
-  line-height: 50px;
+  line-height: .50rem;
   text-align: center;
   color: white;
 }
