@@ -1,8 +1,10 @@
 <!-- 主页 -->
 <template>
 	<div class="container">
-		<div class="mask" v-if="maskIsShow"></div>
-		<Dialog></Dialog>		
+		<div class="mask" v-show="maskIsShow"></div>
+		<transition name="show">
+			<dialogs v-if="diaIsShow" @isShow="isShow" :book="book"></dialogs>		
+		</transition>
 		<div class="banner-news">
 			<banner></banner>
 			<news></news>
@@ -27,17 +29,19 @@
 	import Banner from './components/home/Banner.vue'
 	import News from './components/home/News.vue'
 	import Booklist from './components/home/Booklist.vue'
-	import Dialog from './components/home/dialog.vue'
+	import Dialogs from './components/home/dialogs.vue'
 	export default {
 		name: 'Home',
 		data() {
 			return {
 				maskIsShow: true,
 				bookList: [],
+				diaIsShow: false,
 				newBook: '新书上架',
 				newType: 0,
 				editBook: '推荐书籍',
-				editType: 1
+				editType: 1,
+				book:{}
 			}
 		},
 		mounted() {
@@ -48,10 +52,15 @@
 		},
 		methods: {
 			show(book) {
-				console.log(this.$route);
+				this.diaIsShow = true;
+				this.book = book;
+			},
+			isShow() {
+				this.diaIsShow = false
 			}
+
 		},
-		components: { Banner,News,Booklist,Dialog }
+		components: { Banner,News,Booklist,Dialogs }
 
 	}
 </script>
@@ -75,5 +84,12 @@
 		width: 100%;
 		height: 100%;
 		background-color: black;
+	}
+	.show-enter,.show-leave-to {
+	  transform: translateX(100%);
+	  opacity: 0;
+	}
+	.show-enter-active, .show-leave-active {
+  	transition: all .4s ease-in;
 	}
 </style>

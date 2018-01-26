@@ -5,7 +5,7 @@
 			<span class="fr more">更多&emsp;></span>	
 		</p>
 		<ul class="book-list clearfix">
-			<li v-for="(book, index) in books" @click="$emit('onshow',index+1)">
+			<li v-for="(book, index) in books" @click="$emit('onshow',book)">
 				<img :src="book.url"  alt="">
 				<p class="book-name">{{book.name}}</p>
 				<p class="book-author">{{book.author}}</p>
