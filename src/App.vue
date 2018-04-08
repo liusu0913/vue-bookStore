@@ -22,7 +22,6 @@
 export default {
   name: 'App',
   data() {
-    console.log(1111);
     return {
       show: this.$route.meta.auto
     };

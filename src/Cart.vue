@@ -1,19 +1,20 @@
 <!-- 购物车页面 -->
 <template>
 	<div>
-		<h1>{{tit}}</h1>
+		<book :books="books"></book>
 	</div>
 </template>
 <script>
-	export default {
-		name: 'Cart',
-		data() {
-			return {
-				tit: 'Cart'
-			}
+import book from './components/cart/wantbook';
+export default {
+  name: "Cart",
+  computed: {
+		books() {
+			return this.$store.getters.getWantBook;
 		}
+	},
+	components: {
+		book
 	}
+};
 </script>
-<style scope>
-	
-</style>

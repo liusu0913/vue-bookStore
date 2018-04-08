@@ -17,16 +17,16 @@
 				</div>
 				<div class="buy">
 					<p class="clearfix">
-						<span class="price fl">￥60</span>
+						<span class="price fl">￥{{book.price}}</span>
 						<span class="num fr">
 							<a href="javascript:;" @click="addNum"> + </a>
-							{{num}}
+							{{book.num ? book.num: 0}}
 							<a href="javascript:;" @click="delNum"> - </a>
 						</span>
 					</p>
 				</div>
 				<button class="buy-now">立即购买</button>
-				<button class="add-cart">加入购物车</button>
+				<button class="add-cart" @click="addCart">加入购物车</button>
 			</div>
 		</transition>
 	</div>
@@ -35,17 +35,34 @@
 	export default {
 		name: 'dialog',
 		props: ['book'],
-		data() {
-			return {
-				num: 0
-			}
-		},
 		methods: {
+			// 添加书籍
 			addNum() {
-				this.num ++;
+				let num = this.book.num;
+				if (num === undefined) {
+					this.$set(this.book, 'num', 1);
+				} else {
+					num ++;
+					this.$set(this.book, 'num', num);
+				}
 			},
+			// 删除书籍
 			delNum() {
-				this.num === 0? 0 : this.num--;
+				let num = this.book.num;
+				if (!num) {
+					this.$set(this.book, 'num', 0);
+				} else {
+					num --;
+					this.$set(this.book, 'num', num);
+				}
+			},
+			// 添加购物车
+			addCart() {
+				if(this.book.num === undefined) return false;
+				this.$store.commit({
+					type: 'addWantBook',
+					data: this.book
+				});
 			}
 		}
 	}

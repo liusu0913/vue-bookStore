@@ -17,20 +17,19 @@
 	import Vue from 'vue';
 	export default {
 		name: 'Booklist',
+		// head是控制头部的文字，type通知渲染的是哪类的书籍；1表示推荐书籍，2表示新书上架
 		props: ['head','type'],
-		data() {
-			return {
-				books: {}
-			}
+		created () {
+			// 先调用异步的方法，才能进行异步的请求
+			this.$store.dispatch('getData')
 		},
-		mounted() {
-			Vue.http.get('/static/book.json').then((res)=>{
-				if (this.type === 0) {
-					this.books = res.data.new;
-				}else if(this.type === 1){
-					this.books = res.data.edit;
+		computed: {
+			books() {
+				let data = this.$store.getters.getResultData;
+				if (data) {
+					return this.type === 1? data.new : data.edit;
 				}
-			})
+			}
 		}
 	}
 </script>
