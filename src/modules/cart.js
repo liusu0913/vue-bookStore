@@ -1,17 +1,27 @@
 const state = {
-  wantBook: []
+  wantBook: [],
+  choseArr: []
 };
 const getters = {
   getWantBook() {
     return state.wantBook;
+  },
+  getChoseArr() {
+    return state.choseArr;
   }
 };
+// 
 const mutations = {
+  // 蒙层添加删除书籍操作
   addWantBook(state, obj) {
     let data = obj.data,
+      // vuex数据=想要的数据数组
       wantBook = state.wantBook,
-      bookId = obj.data.id,
-      bookIndex;
+      // 保留书籍的ID，来表示书籍的唯一标示；
+      bookId = data.id;
+    // 默认数据是选中的状态
+    data.isChose = true;
+    // 获取到每本书购买数量和价钱
     data.priceAll = (data.price * data.num).toFixed(2);
     // 添加过购物车的书籍再次添加的数据处理
     for (let i = 0, len = wantBook.length; i < len; i++) {
@@ -37,6 +47,7 @@ const mutations = {
       alert("添加成功！！！！");
     }
   },
+  // 在购物车中增加减少书籍的操作
   changeWant(state, obj) {
     let data = obj.data,
       wantBook = state.wantBook,
@@ -51,6 +62,22 @@ const mutations = {
           return false;
       }
     }
+  },
+  // 获得对应的书籍等额选中状态
+  getChoseArr(state) {
+    let wantBook = state.wantBook,
+      choseArr = state.choseArr;
+    wantBook.forEach((ele, index) => {
+      choseArr.push(ele.isChose);
+    });
+  },
+  // 点击选中的事件再次点击不选事件
+  changeChoseArr(state, obj) {
+    let index = obj.data,
+    choseArr = state.choseArr,
+    flag = choseArr[index];
+    choseArr.splice(index, 1, !flag);
+    // choseArr[index] = !choseArr[index];
   }
 };
 export default {
