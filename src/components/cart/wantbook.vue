@@ -9,18 +9,18 @@
         <a href="javascript:;"></a>
       </p>
       <ul class="want-books">
-        <li v-for="(book, index) in books" :data-id="book.id" @click="toggleClass(index)" v-bind:class="{'active':!isChose[index]}">
+        <li v-for="(book, index) in books" v-bind:data-id="book.id" @click="toggleClass(index)" v-bind:class="{'active':!isChose[index]}">
           <img :src="book.url" alt="" class="logo">
           <div class="intr">
-            <p>书名：{{book.name}}{{isChose[index]}}</p>
+            <p>书名：{{book.name}}</p>
             <p>作者：{{book.author}}</p>
             <p>简介：{{book.msg}}</p>
             <p class="money">
               <span class="book-price">$ {{book.price}}</span>
               <span class="want-num">
-                <a href="javascript:;" @click="changeWant(book, 1)">+</a>
+                <a href="javascript:;" @click.stop="changeWant(book, 1)">+</a>
                 {{book.num}}
-                <a href="javascript:;" @click="changeWant(book, 0)">-</a>
+                <a href="javascript:;" @click.stop="changeWant(book, 0)">-</a>
               </span>
               <span class="book-priceall">$ {{book.priceAll}}</span>
             </p>
@@ -28,7 +28,7 @@
         </li>
       </ul>
     </div>
-		
+    <p class="all-money">总计消费{{getAllMoney}}元</p>
 	</div>
 </template>
 <script>
@@ -36,17 +36,24 @@ export default {
   name: "wantbook",
   props: ["books"],
   computed: {
+    // 购物车中有数据和没数据的显示控制变量
     isShow() {
       let len = this.books.length;
       return len ? false : true;
     },
+    // 获取到书籍现在的状态，默认是选中的状态
     isChose() {
-      alert('change')
 			this.$store.commit({
 				type: 'getChoseArr'
       });
 			return this.$store.getters.getChoseArr;
-		}
+    },
+    getAllMoney() {
+      this.$store.commit({
+				type: 'getChoseAllMoney'
+      });
+      return this.$store.getters.getAllWantBookMoney;
+    }
   },
   methods: {
     /**
@@ -69,6 +76,7 @@ export default {
       });
       return false;
     },
+    // 点击书籍选中去结账
     toggleClass(index) {
       this.$store.commit({
         type: 'changeChoseArr',
@@ -84,10 +92,14 @@ li {
   margin: 0;
   padding: 0;
 }
-.no-want {
+.no-want,
+.all-money {
   margin-top: 20%;
   font-size: 16px;
   text-align: center;
+}
+.all-money {
+  margin-top: 5%;
 }
 .want-books {
   list-style: none;

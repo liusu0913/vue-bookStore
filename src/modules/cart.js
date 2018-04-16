@@ -1,6 +1,10 @@
 const state = {
+  // 加入购物车的书籍数据
   wantBook: [],
-  choseArr: []
+  // 加入购物车收选中的数据
+  choseArr: [],
+  // 结账的总钱数
+  allBookMoney: 0
 };
 const getters = {
   getWantBook() {
@@ -8,6 +12,9 @@ const getters = {
   },
   getChoseArr() {
     return state.choseArr;
+  },
+  getAllWantBookMoney() {
+    return state.allBookMoney;
   }
 };
 // 
@@ -66,18 +73,29 @@ const mutations = {
   // 获得对应的书籍等额选中状态
   getChoseArr(state) {
     let wantBook = state.wantBook,
-      choseArr = state.choseArr;
+      choseArr = [];
     wantBook.forEach((ele, index) => {
       choseArr.push(ele.isChose);
     });
+    state.choseArr = choseArr;
   },
   // 点击选中的事件再次点击不选事件
   changeChoseArr(state, obj) {
-    let index = obj.data,
-    choseArr = state.choseArr,
-    flag = choseArr[index];
-    choseArr.splice(index, 1, !flag);
-    // choseArr[index] = !choseArr[index];
+    let index = obj.data;
+    state.wantBook[index].isChose = !state.wantBook[index].isChose;
+    this.commit('getChoseArr');
+  },
+  getChoseAllMoney(state) {
+    let choseArr = state.choseArr,
+    wantBook = state.wantBook,
+    allBookMoney = 0;
+    choseArr.forEach((flag, index)=> {
+      if (flag) {
+        console.log('chose');
+        allBookMoney += parseFloat(wantBook[index].priceAll);
+      }
+    });
+    state.allBookMoney = allBookMoney;
   }
 };
 export default {
