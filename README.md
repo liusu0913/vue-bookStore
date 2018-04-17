@@ -1,30 +1,17 @@
-# dome
+# BookStore Dome
+> 本项目分成4个小菜单的项目；Home，Me，Cart，
+Explore
 
-> A Vue.js project
+## Home
+> 主页主要展示图书的信心可以添加进入购物车，等或者直接购买图书
+1. 利用传参来控制渲染的数据
+2. 参数是有Vuex的数据，利用cumputed计算属性来获取图书的列表的数据；
+> 用cumputed不用其他的钩子函数的原因是因为，此数据来源于Vuex的actions中的操作来进行异步的请求来拿到数据；如果用钩子函数可能会出现不必要的错误，可能钩子函数出发了但是异步请求没有请求完毕，数据没有返回就会出现错误
+3. 添加书籍进入购物车的操作，利用vuex的数据进行操作；将选中的书籍添加进入Vuex的购物车数组的数据中在进行一系列的重复添加的操作；
 
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Cart
+> 主要实现的是点击加入 购物车的书籍点击可以取消选中，在次点击可以添加选中；并切在购物车中可以改变加入购物车书籍的数量，动态计算出全部的钱数；
+1. 点击选中和删除的书籍的操作；
+> 利用Vuex的数据添加一个数组来存储现在加入购物车数据的状态，改变数组就可以改变对应的书籍的选中状态
+2.结账的钱数总和的计算
+> 利用Vuex的一个数据来存储当前的总钱数；在利用上一步的状态数组来进行动态的计算当前选中书籍的钱数；
